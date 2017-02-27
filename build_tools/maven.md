@@ -20,27 +20,49 @@ Configure your `~/.m2/settings.xml` file so that maven is aware of the plugin gr
   </pluginGroups>
 ```
 
-Then add the following to your `pom` file:
+Then add the following to your `pom.xml` file:
 
 ```xml
-<distributionManagement>
-  <snapshotRepository>
-    <id>sonatype-nexus-snapshots</id>
-    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-  </snapshotRepository>
-  <repository>
-    <id>sonatype-nexus</id>
-    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-  </repository>
-</distributionManagement>
-
-<plugins>
-  <plugin>
-    <groupId>org.ensime.maven.plugins</groupId>
-    <artifactId>ensime-maven</artifactId>
-    <version>1.0.3</version>
-  </plugin>
-</plugins>
+<project>
+  <repositories>
+    <repository>
+      <id>sonatype-nexus-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>sonatype-nexus</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    ...
+  </repositories>
+  ...
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.ensime.maven.plugins</groupId>
+          <artifactId>ensime-maven</artifactId>
+          <version>1.0.3</version>
+        </plugin>
+        ...
+      </plugins>
+    </pluginManagement>
+    ...
+  </build>
+  ...
+</project>
 ```
 
 ## Generate `.ensime` file
